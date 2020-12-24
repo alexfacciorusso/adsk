@@ -5,12 +5,13 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
-
   build:
     name: Build
     runs-on: windows-latest
+    
     steps:
 
     - name: Set up Go 1.x
@@ -24,10 +25,26 @@ jobs:
     - name: Get dependencies
       run: |
         go get -v -t -d ./...
-        go dep ensure
 
     - name: Build
-      run: go build -v ./...
+      run: go build
 
     - name: Test
       run: go test -v ./...
+      
+    - name: Upload executable artifact
+      uses: actions/upload-artifact@v2.2.1
+      with:
+        path: "*.exe"
+        
+    - name: Upload a Release Asset
+      uses: actions/upload-release-asset@v1.0.2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        # The URL for uploading assets to the release
+        upload_url: https://github.com/alexfacciorusso/adsk/releases/edit/untagged-7e1f2108a665884b6dec
+        asset_path: adsk.exe
+        asset_name: adsk.exe
+        asset_content_type: vnd.microsoft.portable-executable
+
