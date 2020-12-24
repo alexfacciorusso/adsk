@@ -1,8 +1,6 @@
 package adb
 
 import (
-	"adut/archive"
-	"adut/register"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -10,6 +8,8 @@ import (
 	"os"
 	"os/exec"
 
+	"github.com/alexfacciorusso/adsk/archive"
+	"github.com/alexfacciorusso/adsk/register"
 	"github.com/jedib0t/go-pretty/v6/table"
 	adb "github.com/zach-klippenstein/goadb"
 )

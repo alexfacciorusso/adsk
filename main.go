@@ -1,8 +1,6 @@
 package main
 
 import (
-	"adut/adb"
-	"adut/ostools"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -10,6 +8,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/alexfacciorusso/adsk/adb"
+	"github.com/alexfacciorusso/adsk/ostools"
 	"github.com/fatih/color"
 	"github.com/logrusorgru/aurora"
 	"github.com/manifoldco/promptui"

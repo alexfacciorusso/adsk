@@ -1,4 +1,4 @@
-module adut
+module github.com/alexfacciorusso/adsk
 
 go 1.15
 
