@@ -34,14 +34,28 @@ jobs:
     - name: Test
       run: go test -v ./...
 
+    - name: Retrieve version
+      uses: actions/github-script@v3
+      id: retrieve_version
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        result-encoding: string
+        script: |
+          var version = github.event.inputs.version 
+          if (version == null) {
+            version = steps.create_release.outputs.upload_url 
+          }
+          console.log(version)
+          return version
+
     - name: Create a Release
       id: create_release
       uses: actions/create-release@v1
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        tag_name: ${{ steps.retrieve_version.outputs.result }}
+        release_name: Release ${{ steps.retrieve_version.outputs.result }}
         draft: true
         prerelease: true
 
