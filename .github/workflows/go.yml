@@ -20,17 +20,11 @@ jobs:
 
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
-      
-    - name: Chocolatey Action
-      uses: crazy-max/ghaction-chocolatey@v1.4.0
-      with:
-        # Arguments to pass to Chocolatey
-        args: install dep
 
     - name: Get dependencies
       run: |
         go get -v -t -d ./...
-        dep ensure
+        go dep download
 
     - name: Build
       run: go build -v ./...
