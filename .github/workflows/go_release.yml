@@ -4,6 +4,10 @@ on:
   push:
     tags: 'v*'
   workflow_dispatch:
+    inputs:
+        version:
+          description: 'Version'
+          required: true
 
 jobs:
   build:
