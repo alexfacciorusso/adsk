@@ -24,7 +24,7 @@ jobs:
     - name: Get dependencies
       run: |
         go get -v -t -d ./...
-        dep ensure
+        go dep ensure
 
     - name: Build
       run: go build -v ./...
