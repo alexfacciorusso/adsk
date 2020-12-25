@@ -25,7 +25,11 @@ jobs:
         github-token: ${{secrets.GITHUB_TOKEN}}
         result-encoding: string
         script: |
-          var version = github.event.inputs.version 
+          var version = null
+
+          if(github and github.event and github.event.inputs and github.event.inputs.version) 
+            version = github.event.inputs.version
+
           if (version == null) {
             version = steps.create_release.outputs.upload_url 
           }
