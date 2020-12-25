@@ -13,21 +13,19 @@ jobs:
   build:
     name: Build
     runs-on: windows-latest
-    
-    steps:
-    - run: |
-        echo "Event: ${{ github.event }}"
-        echo "Inputs: ${{ github.event.inputs }}"
+
     - name: Retrieve version name
       uses: actions/github-script@v3
       id: retrieve_version
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
         result-encoding: string
+        version: github.event.inputs.version
         script: |
           var version = null
 
-          if(github and github.event and github.event.inputs and github.event.inputs.version) 
+          core.debug(context)
+          if(github && github.event && github.event.inputs && github.event.inputs.version) 
             version = github.event.inputs.version
 
           if (version == null) {
@@ -75,4 +73,3 @@ jobs:
         asset_path: adsk.exe
         asset_name: adsk.exe
         asset_content_type: vnd.microsoft.portable-executable
-
