@@ -15,6 +15,22 @@ jobs:
     runs-on: windows-latest
     
     steps:
+    - run: |
+        echo "Event: ${{ github.event }}"
+        echo "Inputs: ${{ github.event.inputs }}"
+    - name: Retrieve version name
+      uses: actions/github-script@v3
+      id: retrieve_version
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        result-encoding: string
+        script: |
+          var version = github.event.inputs.version 
+          if (version == null) {
+            version = steps.create_release.outputs.upload_url 
+          }
+          console.log(version)
+          return version
 
     - name: Set up Go 1.x
       uses: actions/setup-go@v2
@@ -33,20 +49,6 @@ jobs:
 
     - name: Test
       run: go test -v ./...
-
-    - name: Retrieve version
-      uses: actions/github-script@v3
-      id: retrieve_version
-      with:
-        github-token: ${{secrets.GITHUB_TOKEN}}
-        result-encoding: string
-        script: |
-          var version = github.event.inputs.version 
-          if (version == null) {
-            version = steps.create_release.outputs.upload_url 
-          }
-          console.log(version)
-          return version
 
     - name: Create a Release
       id: create_release
