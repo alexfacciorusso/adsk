@@ -4,13 +4,35 @@ on:
   push:
     tags: 'v*'
   workflow_dispatch:
+    inputs:
+        version:
+          description: 'Version'
+          required: true
 
 jobs:
   build:
     name: Build
     runs-on: windows-latest
-    
-    steps:
+
+    - name: Retrieve version name
+      uses: actions/github-script@v3
+      id: retrieve_version
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        result-encoding: string
+        version: github.event.inputs.version
+        script: |
+          var version = null
+
+          core.debug(context)
+          if(github && github.event && github.event.inputs && github.event.inputs.version) 
+            version = github.event.inputs.version
+
+          if (version == null) {
+            version = steps.create_release.outputs.upload_url 
+          }
+          console.log(version)
+          return version
 
     - name: Set up Go 1.x
       uses: actions/setup-go@v2
@@ -36,8 +58,8 @@ jobs:
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        tag_name: ${{ steps.retrieve_version.outputs.result }}
+        release_name: Release ${{ steps.retrieve_version.outputs.result }}
         draft: true
         prerelease: true
 
@@ -51,4 +73,3 @@ jobs:
         asset_path: adsk.exe
         asset_name: adsk.exe
         asset_content_type: vnd.microsoft.portable-executable
-
