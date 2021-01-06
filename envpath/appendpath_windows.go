@@ -1,4 +1,4 @@
-package register
+package envpath
 
 import (
 	"log"
@@ -37,8 +37,8 @@ func saveRegEnvValue(key string, value string) error {
 	return k.SetStringValue(key, value)
 }
 
-// AppendPath ...
-func AppendPath(newPath string) {
+// AppendToEnvPath appends the parameter to the PATH environment
+func AppendToEnvPath(newPath string) {
 	path, err := getRegEnvValue(pathRegKey)
 	if err != nil {
 		log.Fatal("GetStringValue", err)
