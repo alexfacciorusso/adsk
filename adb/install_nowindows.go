@@ -1,10 +1,5 @@
 // +build !windows
 
-//build !windows
-
-// +build !windows
-// +build !windows
-
 package adb
 
 import (
